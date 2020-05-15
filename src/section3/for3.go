@@ -32,4 +32,14 @@ Loop1:
 		}
 		fmt.Println("ex2: ", i)
 	}
+
+Loop2: // Loop 아래는 반드시 for문이 와야 한다. Loop 레이블 밑에 관련없는 소스코드 시 에러
+	for i := 0; i < 3; i++ {
+		for j := 0; j < 3; j++ {
+			if i == 1 && j == 2 {
+				continue Loop2
+			}
+			fmt.Println("ex3: ", i, j)
+		}
+	}
 }
