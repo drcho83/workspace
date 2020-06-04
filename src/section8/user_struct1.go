@@ -11,8 +11,13 @@ type Car struct {
 }
 
 //구조체 <-> 매소드 바인딩
+// 인반 메소드
+//func Price(c Car) int64 {
+//	return c.price + c.tax
+//}
 
-func Price(c Car) int64 {
+//구조체 자동 연결 메소드
+func (c Car) Price() int64 {
 	return c.price + c.tax
 }
 
@@ -32,7 +37,11 @@ func main() {
 	fmt.Println("ex1: ", bmw, &bmw) //&탐조타입//원본이 변경 됨
 	fmt.Println("ex1: ", benz, &benz)
 
-	fmt.Println("ex2: ", Price(bmw))
-	fmt.Println("ex2: ", Price(benz))
+	//fmt.Println("ex2: ", Price(bmw))
+	//fmt.Println("ex2: ", Price(benz))
 
+	fmt.Println("ex3: ", bmw.Price())
+	fmt.Println("ex3: ", benz.Price())
+
+	fmt.Print("ex4 :", &bmw == &benz)
 }
