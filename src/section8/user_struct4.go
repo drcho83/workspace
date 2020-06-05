@@ -36,5 +36,4 @@ func main() {
 	//값 전달 (원본 값 수정X)
 	bs1.repurchaseD(10, 0)
 	fmt.Println("ex3(totPrice): ", bs1.purchase())
-
 }
