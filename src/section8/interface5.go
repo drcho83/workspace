@@ -1,4 +1,7 @@
 package main
+import (
+	"fmt"
+)
 
 type Dog struct {
 	name   string
