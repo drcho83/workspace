@@ -5,6 +5,16 @@ import (
 	"fmt"
 )
 
+/*
+func checkType(arg interface{}) {
+  switch arg.(type) {
+  case Account:
+  case *Account:
+  default:
+
+}
+*/
+
 func checkType(arg interface{}) {
 	//arg.(type)을 통해서 현재 데이터형 반환
 	switch arg.(type) {
