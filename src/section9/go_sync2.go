@@ -14,8 +14,10 @@ type count struct {
 }
 
 func (c *count) increament() {
+	//공유 데이터 수정 전 뮤텍스로 보호
 	c.mutex.Lock()
 	c.num += 1
+	//공유 데이터 수정 후 보호 해제
 	c.mutex.Unlock()
 }
 

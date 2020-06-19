@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"runtime"
 	"sync"
 	"time"
 
@@ -44,16 +43,16 @@ func test() {
 	fields := map[string]interface{}{
 		"idle":   10.1,
 		"system": 53.3,
-		"user":   46.3,
+		"user":   46.4,
 	}
 
 	pt, err := client.NewPoint("cpu_usage", tags, fields, time.Now())
 	if err != nil {
 		log.Fatal(err)
 	}
-	mutex.Lock()
+
 	bp.AddPoint(pt)
-	mutex.Unlock()
+
 	// Write the batch
 	if err := c.Write(bp); err != nil {
 		log.Fatal(err)
@@ -66,10 +65,5 @@ func test() {
 }
 
 func main() {
-	runtime.GOMAXPROCS(runtime.NumCPU())
-	for a := 1; a < 5; a++ {
-		go test()
-		time.Sleep(1000 * time.Millisecond)
-	}
-
+	test()
 }
