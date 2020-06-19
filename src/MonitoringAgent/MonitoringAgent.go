@@ -2,6 +2,8 @@ package main
 
 import (
 	"log"
+	"runtime"
+	"sync"
 	"time"
 
 	"github.com/influxdata/influxdb1-client/v2"
@@ -13,8 +15,11 @@ const (
 	password = "pw"
 )
 
+var mutex = &sync.Mutex{}
+
 //func insertData(ch chan bool) {
 func test() {
+
 	c, err := client.NewHTTPClient(client.HTTPConfig{
 		Addr:     "http://192.168.65.128:8086",
 		Username: "admin",
@@ -39,15 +44,16 @@ func test() {
 	fields := map[string]interface{}{
 		"idle":   10.1,
 		"system": 53.3,
-		"user":   46.99,
+		"user":   46.3,
 	}
 
 	pt, err := client.NewPoint("cpu_usage", tags, fields, time.Now())
 	if err != nil {
 		log.Fatal(err)
 	}
+	mutex.Lock()
 	bp.AddPoint(pt)
-
+	mutex.Unlock()
 	// Write the batch
 	if err := c.Write(bp); err != nil {
 		log.Fatal(err)
@@ -60,5 +66,10 @@ func test() {
 }
 
 func main() {
-	test()
+	runtime.GOMAXPROCS(runtime.NumCPU())
+	for a := 1; a < 5; a++ {
+		go test()
+		time.Sleep(1000 * time.Millisecond)
+	}
+
 }
