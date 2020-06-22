@@ -32,7 +32,7 @@ func main() {
 	//뮤텍스(Mutex) : 여러 고루틴에서 작업하는 공유데이터 보호
 	//sync.Mutex 선언 후 Lock, Unlock 사용
 
-	//동기화 사용하지 않은 경우 example1
+	//동기화 사용 경우 example1
 	//시스템 전체 CPU 사용
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
