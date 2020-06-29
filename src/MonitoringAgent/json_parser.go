@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	response, err := http.Get("https://openapi.cloudn.co.kr/cdnservice/statisticsapi/statistics/totaldomain/transfer")
+	response, err := http.Get("http://localhost/getstatus.json")
 	if err != nil {
 		fmt.Printf("%s", err)
 		os.Exit(1)
@@ -22,11 +22,11 @@ func main() {
 		}
 
 		//var data map[string] interface{} //json 데이터를 저장할 공간을 맵으로 선언
-		fmt.Println(string(contents))
+		//fmt.Println(string(contents))
 		data := make(map[string]interface{})
 		json.Unmarshal([]byte(contents), &data)
 		for k, j := range data {
-			fmt.Println("ex2 :", k, j)
+			fmt.Println(k, j)
 		}
 	}
 }
