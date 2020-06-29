@@ -8,10 +8,14 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-type Etc struct {
-	etc1 int64
-	etc2 int64
-	etc3 int64
+type strucTest struct {
+	mainServerStatus string
+	etc1             int64
+	etc2             int64
+	etc3             int64
+	serverID         int64
+	userCount        int64
+	loginCount       int64
 }
 
 func main() {
@@ -81,13 +85,13 @@ func main() {
 	data := make(map[string]interface{})
 
 	for i := 0; i <= b; i++ {
-		ServerList = "serverList." + strconv.Itoa(i)
+		ServerList = "serverList." + strconv.Itoa(i) + ".serverId"
 		value := gjson.Get(doc, ServerList)
 		//fmt.Println(value.String())
 		data[strconv.Itoa(i)] = value
 	}
-
-	for _, j := range data{
+	for _, j := range data {
 		fmt.Println(j)
+
 	}
 }
