@@ -145,7 +145,8 @@ func main() {
 		//fmt.Println("BaseStruct: ", data[strconv.Itoa(i)])
 		//data[strconv.Itoa(i)] = value
 	}
-	for _, j := range data {
-		fmt.Println(j)
+	for k, j := range data {
+		fmt.Println(k, j)
+
 	}
 }
