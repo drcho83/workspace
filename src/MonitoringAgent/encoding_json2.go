@@ -114,7 +114,7 @@ func main() {
 		fmt.Println(b)
 	}
 
-	for i := 0; i <= 40; i++ {
+	for i := 0; i <= b; i++ {
 		mainServerStatus = "serverList." + strconv.Itoa(i) + ".logicalServerStatus.mainServerStatus"
 		etc1 = "serverList." + strconv.Itoa(i) + ".etc.etc1"
 		etc2 = "serverList." + strconv.Itoa(i) + ".etc.etc2"
