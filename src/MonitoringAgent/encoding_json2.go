@@ -2,7 +2,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 
 	//"io/ioutil"
@@ -103,7 +102,7 @@ func main() {
 	var userCount string
 	var loginCount string
 
-	data := make(map[string]interface{})
+	data := make(map[string]BaseStruct)
 
 	//convert b, gjson.result to int64
 
@@ -146,17 +145,16 @@ func main() {
 				UserCount:        userCount.Int(),
 				LoginCount:       loginCount.Int()}
 		}
-		//fmt.Println("BaseStruct: ", data[strconv.Itoa(i)])
-		//data[strconv.Itoa(i)] = value
-		//fmt.Println(data)
-		j, _ := json.Marshal(data)
-		json.Unmarshal(j, &data)
+		//j, _ := json.Marshal(data)
+		//json.Unmarshal(j, &data)
 		//fmt.Println(&data)
 		//fmt.Println(data)
+		fmt.Println(data[strconv.Itoa(i)].ServerID, data[strconv.Itoa(i)].MainServerStatus, data[strconv.Itoa(i)].Etc1, data[strconv.Itoa(i)].Etc2, data[strconv.Itoa(i)].Etc3, data[strconv.Itoa(i)].UserCount, data[strconv.Itoa(i)].LoginCount)
 	}
-
-	for k, j := range data {
-		fmt.Println(k, j)
-	}
+	/*
+		for k, j := range data {
+			fmt.Println(k, j.Etc1)
+		}
+	*/
 
 }
