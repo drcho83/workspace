@@ -2,10 +2,13 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"net/http"
-	"os"
+
+	//"io/ioutil"
+	//"net/http"
+	//"os"
+
 	//"reflect"
 	"strconv"
 
@@ -13,19 +16,19 @@ import (
 )
 
 type BaseStruct struct {
-	mainServerStatus string
-	etc1             int64
-	etc2             int64
-	etc3             int64
-	serverID         int64
-	userCount        int64
-	loginCount       int64
+	MainServerStatus string
+	Etc1             int64
+	Etc2             int64
+	Etc3             int64
+	ServerID         int64
+	UserCount        int64
+	LoginCount       int64
 }
 
 func main() {
 	//마샬링: 논리적 구조를 바이트로 변경
-	/*
-		doc := `
+
+	doc := `
 			{
 				"serverList":[
 				{"logicalServerStatus":{"mainServerStatus":true},"etc":{"etc1":379188784,"etc2":5346768814,"etc3":4273911029521},"serverId":1101,"userCount":64,"loginCount":44},
@@ -71,33 +74,34 @@ func main() {
 				]
 			}
 			`
-	*/
-	var doc string
-	response, err := http.Get("http://localhost/getstatus.json")
-	if err != nil {
-		fmt.Printf("%s", err)
-		os.Exit(1)
-	} else {
-		defer response.Body.Close()
-		contents, err := ioutil.ReadAll(response.Body)
+	/*
+		var doc string
+		response, err := http.Get("http://localhost/getstatus.json")
 		if err != nil {
 			fmt.Printf("%s", err)
 			os.Exit(1)
+		} else {
+			defer response.Body.Close()
+			contents, err := ioutil.ReadAll(response.Body)
+			if err != nil {
+				fmt.Printf("%s", err)
+				os.Exit(1)
+			}
+
+			//fmt.Println(string(contents))
+			doc = string(contents)
+			//fmt.Println(doc)
+
 		}
-
-		//fmt.Println(string(contents))
-		doc = string(contents)
-		//fmt.Println(doc)
-
-	}
+	*/
 	//declere valiable
-	var MainServerStatus string
-	var Etc1 string
-	var Etc2 string
-	var Etc3 string
-	var ServerID string
-	var UserCount string
-	var LoginCount string
+	var mainServerStatus string
+	var etc1 string
+	var etc2 string
+	var etc3 string
+	var serverID string
+	var userCount string
+	var loginCount string
 
 	data := make(map[string]interface{})
 
@@ -111,42 +115,48 @@ func main() {
 	}
 
 	for i := 0; i <= 40; i++ {
-		MainServerStatus = "serverList." + strconv.Itoa(i) + ".logicalServerStatus.mainServerStatus"
-		Etc1 = "serverList." + strconv.Itoa(i) + ".etc.etc1"
-		Etc2 = "serverList." + strconv.Itoa(i) + ".etc.etc2"
-		Etc3 = "serverList." + strconv.Itoa(i) + ".etc.etc3"
-		ServerID = "serverList." + strconv.Itoa(i) + ".serverId"
-		UserCount = "serverList." + strconv.Itoa(i) + ".userCount"
-		LoginCount = "serverList." + strconv.Itoa(i) + ".loginCount"
+		mainServerStatus = "serverList." + strconv.Itoa(i) + ".logicalServerStatus.mainServerStatus"
+		etc1 = "serverList." + strconv.Itoa(i) + ".etc.etc1"
+		etc2 = "serverList." + strconv.Itoa(i) + ".etc.etc2"
+		etc3 = "serverList." + strconv.Itoa(i) + ".etc.etc3"
+		serverID = "serverList." + strconv.Itoa(i) + ".serverId"
+		userCount = "serverList." + strconv.Itoa(i) + ".userCount"
+		loginCount = "serverList." + strconv.Itoa(i) + ".loginCount"
 
 		//Get Json
-		ServerID := gjson.Get(doc, ServerID)                 //gjson Type
-		MainServerStatus := gjson.Get(doc, MainServerStatus) //gjson Type
-		Etc1 := gjson.Get(doc, Etc1)                         //gjson Type
-		Etc2 := gjson.Get(doc, Etc2)                         //gjson Type
-		Etc3 := gjson.Get(doc, Etc3)                         //gjson Type
-		UserCount := gjson.Get(doc, UserCount)               //gjson Type
-		LoginCount := gjson.Get(doc, LoginCount)             //gjson Type
+		serverID := gjson.Get(doc, serverID)                 //gjson Type
+		mainServerStatus := gjson.Get(doc, mainServerStatus) //gjson Type
+		etc1 := gjson.Get(doc, etc1)                         //gjson Type
+		etc2 := gjson.Get(doc, etc2)                         //gjson Type
+		etc3 := gjson.Get(doc, etc3)                         //gjson Type
+		userCount := gjson.Get(doc, userCount)               //gjson Type
+		loginCount := gjson.Get(doc, loginCount)             //gjson Type
 
 		//fmt.Println(reflect.TypeOf(ServerID))
 		//fmt.Println(reflect.TypeOf(ServerID.Int()))
 		//fmt.Println(ServerID.String())
 		//fmt.Println(MainServerStatus.String())
-		if ServerID.Int() != 0 {
+		if serverID.Int() != 0 {
 			data[strconv.Itoa(i)] = BaseStruct{
-				serverID:         ServerID.Int(),
-				mainServerStatus: MainServerStatus.String(),
-				etc1:             Etc1.Int(),
-				etc2:             Etc2.Int(),
-				etc3:             Etc3.Int(),
-				userCount:        UserCount.Int(),
-				loginCount:       LoginCount.Int()}
+				ServerID:         serverID.Int(),
+				MainServerStatus: mainServerStatus.String(),
+				Etc1:             etc1.Int(),
+				Etc2:             etc2.Int(),
+				Etc3:             etc3.Int(),
+				UserCount:        userCount.Int(),
+				LoginCount:       loginCount.Int()}
 		}
 		//fmt.Println("BaseStruct: ", data[strconv.Itoa(i)])
 		//data[strconv.Itoa(i)] = value
+		//fmt.Println(data)
+		j, _ := json.Marshal(data)
+		json.Unmarshal(j, &data)
+		//fmt.Println(&data)
+		//fmt.Println(data)
 	}
+
 	for k, j := range data {
 		fmt.Println(k, j)
-
 	}
+
 }

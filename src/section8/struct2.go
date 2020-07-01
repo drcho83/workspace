@@ -44,6 +44,7 @@ func main() {
 	fmt.Printf("ex2 :%#v\n", lee)
 	fmt.Println()
 	fmt.Println("ex1 :", int(kim.Calculate()))
+	fmt.Println("ex1 :", int(kim.
 	fmt.Println("ex1 :", int(hong.Calculate()))
 	fmt.Println("ex1 :", int(lee.Calculate()))
 
