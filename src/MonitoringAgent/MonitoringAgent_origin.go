@@ -134,6 +134,7 @@ func main() {
 				}
 			*/
 
+			//influxDB Insert!!!
 			c, err := client.NewHTTPClient(client.HTTPConfig{
 				Addr:     "http://192.168.65.132:8086",
 				Username: "admin",
