@@ -25,7 +25,6 @@ type BaseStruct struct {
 }
 
 func main() {
-	//마샬링: 논리적 구조를 바이트로 변경
 	/*
 		doc := `
 				{
@@ -149,11 +148,13 @@ func main() {
 		//json.Unmarshal(j, &data)
 		//fmt.Println(&data)
 		//fmt.Println(data)
-		//fmt.Println(data[strconv.Itoa(i)].ServerID, data[strconv.Itoa(i)].MainServerStatus, data[strconv.Itoa(i)].Etc1, data[strconv.Itoa(i)].Etc2, data[strconv.Itoa(i)].Etc3, data[strconv.Itoa(i)].UserCount, data[strconv.Itoa(i)].LoginCount)
+		if serverID.Int() != 0 {
+			fmt.Println(data[strconv.Itoa(i)].ServerID, data[strconv.Itoa(i)].MainServerStatus, data[strconv.Itoa(i)].Etc1, data[strconv.Itoa(i)].Etc2, data[strconv.Itoa(i)].Etc3, data[strconv.Itoa(i)].UserCount, data[strconv.Itoa(i)].LoginCount)
+		}
 	}
-
-	for k, j := range data {
-		fmt.Println(k, j)
-	}
-
+	/*
+		for k, j := range data {
+			fmt.Println(k, j)
+		}
+	*/
 }

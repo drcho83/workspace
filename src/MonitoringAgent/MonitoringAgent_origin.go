@@ -35,10 +35,12 @@ func main() {
 
 	wg := new(sync.WaitGroup)
 
+	//arr1 := [3]string{"LM", "L2M", "H2"}
+
 	defile_map := map[string]string{
-		"LMSS": "http://localhost/getstatus.json",
-		"L2MM": "http://localhost/getstatus2.json",
-		"H22":  "http://localhost/getstatus3.json",
+		"LMS": "http://localhost/getstatus1.json",
+		//	"L2M": "http://localhost/getstatus2.json",
+		//	"H2":  "http://localhost/getstatus3.json",
 	}
 
 	for k, v := range defile_map {
@@ -66,7 +68,7 @@ func main() {
 
 			}
 
-			//declare valiable
+			//declere valiable
 			var mainServerStatus string
 			var etc1 string
 			var etc2 string
@@ -81,25 +83,12 @@ func main() {
 
 			a := gjson.Get(doc, "serverList.#")
 			stringB := a.String()
-			linecount, err := strconv.Atoi(stringB)
+			line_count, err := strconv.Atoi(stringB)
 			if err == nil {
-				fmt.Println(linecount)
+				fmt.Println(line_count)
 			}
 
-			//define influxdb connection
-			c, err := client.NewHTTPClient(client.HTTPConfig{
-				Addr:     "http://192.168.65.132:8086",
-				Username: "admin",
-				Password: "Pa$$w0rd",
-			})
-			if err != nil {
-				log.Fatal(err)
-			}
-			defer c.Close()
-
-			// end influxdb conntion
-
-			for i := 0; i <= linecount; i++ {
+			for i := 0; i <= line_count; i++ {
 				mainServerStatus = "serverList." + strconv.Itoa(i) + ".logicalServerStatus.mainServerStatus"
 				etc1 = "serverList." + strconv.Itoa(i) + ".etc.etc1"
 				etc2 = "serverList." + strconv.Itoa(i) + ".etc.etc2"
@@ -131,13 +120,32 @@ func main() {
 						UserCount:        userCount.Int(),
 						LoginCount:       loginCount.Int()}
 				}
+				//j, _ := json.Marshal(data)
+				//json.Unmarshal(j, &data)
+				//fmt.Println(&data)
+				//fmt.Println(data)
+				if serverID.Int() != 0 {
+					fmt.Println(data[strconv.Itoa(i)].ServerID, data[strconv.Itoa(i)].MainServerStatus, data[strconv.Itoa(i)].Etc1, data[strconv.Itoa(i)].Etc2, data[strconv.Itoa(i)].Etc3, data[strconv.Itoa(i)].UserCount, data[strconv.Itoa(i)].LoginCount)
+				}
+			}
+			/*
+				for k, j := range data {
+					fmt.Println(k, j)
+				}
+			*/
 
-				/*
-					if serverID.Int() != 0 {
-						fmt.Println(data[strconv.Itoa(i)].ServerID, data[strconv.Itoa(i)].MainServerStatus, data[strconv.Itoa(i)].Etc1, data[strconv.Itoa(i)].Etc2, data[strconv.Itoa(i)].Etc3, data[strconv.Itoa(i)].UserCount, data[strconv.Itoa(i)].LoginCount)
-				}*/
+			c, err := client.NewHTTPClient(client.HTTPConfig{
+				Addr:     "http://192.168.65.132:8086",
+				Username: "admin",
+				Password: "Pa$$w0rd",
+			})
+			if err != nil {
+				log.Fatal(err)
+			}
+			defer c.Close()
 
-				//create batch points
+			// Create a new point batch
+			for i := 0; i <= 10; i++ {
 				bp, err := client.NewBatchPoints(client.BatchPointsConfig{
 					Database:  "test1",
 					Precision: "ms",
@@ -145,15 +153,13 @@ func main() {
 				if err != nil {
 					log.Fatal(err)
 				}
+
 				// Create a point and add to batch
-				tags := map[string]string{"ServerID": string(data[strconv.Itoa(i)].ServerID)}
+				tags := map[string]string{"cpu": "cpu-total"}
 				fields := map[string]interface{}{
-					"MainServerStatus": data[strconv.Itoa(i)].MainServerStatus,
-					"Etc1":             data[strconv.Itoa(i)].Etc1,
-					"Etc2":             data[strconv.Itoa(i)].Etc2,
-					"Etc3":             data[strconv.Itoa(i)].Etc3,
-					"UserCount":        data[strconv.Itoa(i)].UserCount,
-					"LoginCount":       data[strconv.Itoa(i)].LoginCount,
+					"idle":   10.1,
+					"system": 53.3,
+					"user":   80.1 + float64(i),
 				}
 
 				pt, err := client.NewPoint(gameid, tags, fields, time.Now())
