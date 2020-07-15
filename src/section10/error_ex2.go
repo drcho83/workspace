@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"math"
 )
@@ -8,7 +9,7 @@ import (
 //f의 i 제곱 구하는 함수
 func Power(f float64, i float64) (float64, error) {
 	if f == 0 {
-		return 0, fmt.Errorf("(%g)은/는 사용 불가능 합니다.",f)
+		return 0, errors.New("0은 사용 불가능 합니다.")
 	}
 	return math.Pow(f, i), nil //제곱 ,nil 반환
 }
