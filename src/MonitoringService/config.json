@@ -1,0 +1,5 @@
+{
+  "LNM":"http://localhost/lm.json",
+  "L2M":"http://localhost/l2m.json",
+  "H2M":"http://localhost/h2.json"
+}
